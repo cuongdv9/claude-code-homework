@@ -1,5 +1,10 @@
 import { useReducer, useCallback, useEffect } from "react";
-import questions from "../data/questions.json";
+import allQuestions from "../data/questions.json";
+
+function pickQuestions() {
+  const shuffled = [...allQuestions].sort(() => Math.random() - 0.5);
+  return shuffled.slice(0, 15);
+}
 
 export const MONEY_LADDER = [
   "$100",
@@ -19,20 +24,23 @@ export const MONEY_LADDER = [
   "$1,000,000",
 ];
 
-const INITIAL_STATE = {
-  questionIndex: 0,
-  correctCount: 0,
-  history: [], // 'correct' | 'wrong' per answered question
-  phase: "answering", // 'answering' | 'feedback'
-  selectedAnswer: null,
-  isCorrect: null,
-  timedOut: false,
-  lifelines: { fifty: true, audience: true, phone: true },
-  eliminatedAnswers: [],
-  audienceData: null,
-  phoneData: null,
-  activeLifeline: null, // 'audience' | 'phone' | null
-};
+function makeInitialState() {
+  return {
+    questions: pickQuestions(),
+    questionIndex: 0,
+    correctCount: 0,
+    history: [], // 'correct' | 'wrong' per answered question
+    phase: "answering", // 'answering' | 'feedback'
+    selectedAnswer: null,
+    isCorrect: null,
+    timedOut: false,
+    lifelines: { fifty: true, audience: true, phone: true },
+    eliminatedAnswers: [],
+    audienceData: null,
+    phoneData: null,
+    activeLifeline: null, // 'audience' | 'phone' | null
+  };
+}
 
 function generateAudienceData(answers, correct) {
   const correctPct = Math.floor(Math.random() * 25) + 50;
@@ -68,7 +76,7 @@ function reducer(state, action) {
 
     case "CONFIRM_ANSWER": {
       if (state.phase !== "answering" || !state.selectedAnswer) return state;
-      const q = questions[state.questionIndex];
+      const q = state.questions[state.questionIndex];
       return {
         ...state,
         phase: "feedback",
@@ -82,7 +90,8 @@ function reducer(state, action) {
 
     case "NEXT_QUESTION":
       return {
-        ...INITIAL_STATE,
+        ...makeInitialState(),
+        questions: state.questions,
         questionIndex: state.questionIndex + 1,
         correctCount: state.isCorrect
           ? state.correctCount + 1
@@ -93,7 +102,7 @@ function reducer(state, action) {
 
     case "USE_FIFTY": {
       if (!state.lifelines.fifty || state.phase !== "answering") return state;
-      const q = questions[state.questionIndex];
+      const q = state.questions[state.questionIndex];
       const wrong = q.answers.filter(
         (a) => a !== q.correct && a !== state.selectedAnswer,
       );
@@ -108,7 +117,7 @@ function reducer(state, action) {
     case "USE_AUDIENCE": {
       if (!state.lifelines.audience || state.phase !== "answering")
         return state;
-      const q = questions[state.questionIndex];
+      const q = state.questions[state.questionIndex];
       return {
         ...state,
         lifelines: { ...state.lifelines, audience: false },
@@ -119,7 +128,7 @@ function reducer(state, action) {
 
     case "USE_PHONE": {
       if (!state.lifelines.phone || state.phase !== "answering") return state;
-      const q = questions[state.questionIndex];
+      const q = state.questions[state.questionIndex];
       return {
         ...state,
         lifelines: { ...state.lifelines, phone: false },
@@ -132,7 +141,7 @@ function reducer(state, action) {
       return { ...state, activeLifeline: null };
 
     case "RESET":
-      return INITIAL_STATE;
+      return makeInitialState();
 
     default:
       return state;
@@ -151,20 +160,19 @@ function loadSaved() {
 }
 
 export function useGame() {
-  const [state, dispatch] = useReducer(
-    reducer,
-    null,
-    () => loadSaved() || INITIAL_STATE,
-  );
+  const [state, dispatch] = useReducer(reducer, null, () => {
+    const s = loadSaved();
+    return s && s.questions ? s : makeInitialState();
+  });
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
   }, [state]);
 
-  const currentQuestion = questions[state.questionIndex];
+  const currentQuestion = state.questions[state.questionIndex];
   const currentAmount =
     state.correctCount === 0 ? "$0" : MONEY_LADDER[state.correctCount - 1];
-  const isLastQuestion = state.questionIndex === questions.length - 1;
+  const isLastQuestion = state.questionIndex === state.questions.length - 1;
 
   const selectAnswer = useCallback(
     (answer) => {
