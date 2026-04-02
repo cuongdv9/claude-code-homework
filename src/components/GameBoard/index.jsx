@@ -5,6 +5,7 @@ import Header from "./Header";
 import QuestionBox from "./QuestionBox";
 import AnswerButtons from "./AnswerButtons";
 import LifelineOverlay from "./LifelineOverlay";
+import Confetti from "../Confetti";
 
 const TIMER_SECONDS = 15;
 
@@ -62,6 +63,7 @@ export default function GameBoard({ game, onEnd }) {
 
   return (
     <div className="gameboard">
+      {phase === "feedback" && isCorrect && <Confetti />}
       <Header
         questionIndex={questionIndex}
         currentAmount={currentAmount}
