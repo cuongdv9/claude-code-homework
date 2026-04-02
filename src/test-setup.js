@@ -8,3 +8,4 @@ const localStorage = {
   clear: () => { Object.keys(store).forEach(k => delete store[k]) },
 }
 vi.stubGlobal('localStorage', localStorage)
+
