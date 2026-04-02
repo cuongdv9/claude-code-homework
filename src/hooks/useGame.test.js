@@ -56,7 +56,10 @@ describe("useGame — answer selection", () => {
 describe("useGame — feedback phase", () => {
   it("sets isCorrect true for right answer", () => {
     const { result } = renderHook(() => useGame());
-    const correct = result.current.currentQuestion.correct;
+    const correct =
+      result.current.currentQuestion.answers[
+        result.current.currentQuestion.correct
+      ];
     act(() => result.current.selectAnswer(correct));
     act(() => result.current.confirmAnswer());
     expect(result.current.isCorrect).toBe(true);
@@ -65,7 +68,11 @@ describe("useGame — feedback phase", () => {
   it("sets isCorrect false for wrong answer", () => {
     const { result } = renderHook(() => useGame());
     const wrong = result.current.currentQuestion.answers.find(
-      (a) => a !== result.current.currentQuestion.correct,
+      (a) =>
+        a !==
+        result.current.currentQuestion.answers[
+          result.current.currentQuestion.correct
+        ],
     );
     act(() => result.current.selectAnswer(wrong));
     act(() => result.current.confirmAnswer());
@@ -104,7 +111,11 @@ describe("useGame — lifelines", () => {
     act(() => result.current.useFifty());
     expect(result.current.eliminatedAnswers).toHaveLength(2);
     result.current.eliminatedAnswers.forEach((a) => {
-      expect(a).not.toBe(result.current.currentQuestion.correct);
+      expect(a).not.toBe(
+        result.current.currentQuestion.answers[
+          result.current.currentQuestion.correct
+        ],
+      );
     });
   });
 
@@ -150,14 +161,21 @@ describe("useGame — money ladder", () => {
     const { result } = renderHook(() => useGame());
     expect(result.current.currentAmount).toBe("$0");
     // correct answer → currentAmount increases
-    const correct = result.current.currentQuestion.correct;
+    const correct =
+      result.current.currentQuestion.answers[
+        result.current.currentQuestion.correct
+      ];
     act(() => result.current.selectAnswer(correct));
     act(() => result.current.confirmAnswer());
     act(() => result.current.nextQuestion());
     expect(result.current.currentAmount).toBe(MONEY_LADDER[0]);
     // wrong answer → currentAmount stays
     const wrong = result.current.currentQuestion.answers.find(
-      (a) => a !== result.current.currentQuestion.correct,
+      (a) =>
+        a !==
+        result.current.currentQuestion.answers[
+          result.current.currentQuestion.correct
+        ],
     );
     act(() => result.current.selectAnswer(wrong));
     act(() => result.current.confirmAnswer());

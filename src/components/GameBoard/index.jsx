@@ -101,7 +101,7 @@ export default function GameBoard({ game, onEnd }) {
 
         <AnswerButtons
           answers={currentQuestion.answers}
-          correct={currentQuestion.correct}
+          correct={currentQuestion.answers[currentQuestion.correct]}
           selectedAnswer={selectedAnswer}
           phase={phase}
           eliminatedAnswers={eliminatedAnswers}

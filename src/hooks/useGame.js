@@ -8,7 +8,11 @@ function pickQuestions() {
 
 function validateQuestions(qs) {
   return qs.every(
-    (q) => Array.isArray(q.answers) && q.answers.includes(q.correct),
+    (q) =>
+      Array.isArray(q.answers) &&
+      typeof q.correct === "number" &&
+      q.correct >= 0 &&
+      q.correct < q.answers.length,
   );
 }
 
@@ -92,7 +96,7 @@ function reducer(state, action) {
       return {
         ...state,
         phase: "feedback",
-        isCorrect: state.selectedAnswer === q.correct,
+        isCorrect: state.selectedAnswer === q.answers[q.correct],
       };
     }
 
@@ -115,10 +119,11 @@ function reducer(state, action) {
     case "USE_FIFTY": {
       if (!state.lifelines.fifty || state.phase !== "answering") return state;
       const q = state.questions[state.questionIndex];
-      const wrong = q.answers.filter((a) => a !== q.correct);
+      const correctAnswer = q.answers[q.correct];
+      const wrong = q.answers.filter((a) => a !== correctAnswer);
       // Keep selected answer if it's wrong, remove the other two wrong answers
       const preserve =
-        state.selectedAnswer && state.selectedAnswer !== q.correct
+        state.selectedAnswer && state.selectedAnswer !== correctAnswer
           ? state.selectedAnswer
           : null;
       const toRemove = wrong
@@ -139,7 +144,7 @@ function reducer(state, action) {
       return {
         ...state,
         lifelines: { ...state.lifelines, audience: false },
-        audienceData: generateAudienceData(q.answers, q.correct),
+        audienceData: generateAudienceData(q.answers, q.answers[q.correct]),
         activeLifeline: "audience",
       };
     }
@@ -150,7 +155,7 @@ function reducer(state, action) {
       return {
         ...state,
         lifelines: { ...state.lifelines, phone: false },
-        phoneData: generatePhoneData(q.answers, q.correct),
+        phoneData: generatePhoneData(q.answers, q.answers[q.correct]),
         activeLifeline: "phone",
       };
     }
