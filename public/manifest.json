@@ -1,0 +1,9 @@
+{
+  "name": "QuizMillionaire",
+  "short_name": "QuizMM",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0e2a",
+  "theme_color": "#0a0e2a",
+  "icons": []
+}

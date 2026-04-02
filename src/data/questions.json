@@ -1,0 +1,92 @@
+[
+  {
+    "id": 1,
+    "question": "What color is a ripe banana?",
+    "answers": ["Red", "Blue", "Yellow", "Green"],
+    "correct": "Yellow"
+  },
+  {
+    "id": 2,
+    "question": "How many days are in a week?",
+    "answers": ["5", "6", "8", "7"],
+    "correct": "7"
+  },
+  {
+    "id": 3,
+    "question": "What is the capital of France?",
+    "answers": ["London", "Paris", "Berlin", "Madrid"],
+    "correct": "Paris"
+  },
+  {
+    "id": 4,
+    "question": "Which planet is known as the Red Planet?",
+    "answers": ["Venus", "Saturn", "Mars", "Jupiter"],
+    "correct": "Mars"
+  },
+  {
+    "id": 5,
+    "question": "What is the largest ocean on Earth?",
+    "answers": ["Atlantic", "Arctic", "Pacific", "Indian"],
+    "correct": "Pacific"
+  },
+  {
+    "id": 6,
+    "question": "In what year did World War II end?",
+    "answers": ["1943", "1944", "1946", "1945"],
+    "correct": "1945"
+  },
+  {
+    "id": 7,
+    "question": "What is the chemical symbol for gold?",
+    "answers": ["Go", "Ag", "Au", "Gd"],
+    "correct": "Au"
+  },
+  {
+    "id": 8,
+    "question": "Who wrote the play 'Romeo and Juliet'?",
+    "answers": ["Charles Dickens", "Jane Austen", "William Shakespeare", "Mark Twain"],
+    "correct": "William Shakespeare"
+  },
+  {
+    "id": 9,
+    "question": "What is the smallest country in the world by area?",
+    "answers": ["Monaco", "Vatican City", "San Marino", "Liechtenstein"],
+    "correct": "Vatican City"
+  },
+  {
+    "id": 10,
+    "question": "Which element has the atomic number 79?",
+    "answers": ["Silver", "Mercury", "Platinum", "Gold"],
+    "correct": "Gold"
+  },
+  {
+    "id": 11,
+    "question": "Which ancient wonder was located in Alexandria, Egypt?",
+    "answers": ["Colossus of Rhodes", "Hanging Gardens", "Lighthouse of Alexandria", "Temple of Artemis"],
+    "correct": "Lighthouse of Alexandria"
+  },
+  {
+    "id": 12,
+    "question": "In which year was the Eiffel Tower completed?",
+    "answers": ["1885", "1887", "1891", "1889"],
+    "correct": "1889"
+  },
+  {
+    "id": 13,
+    "question": "What is the name of the deepest lake in the world?",
+    "answers": ["Lake Superior", "Lake Tanganyika", "Caspian Sea", "Lake Baikal"],
+    "correct": "Lake Baikal"
+  },
+  {
+    "id": 14,
+    "question": "Who proved Fermat's Last Theorem in 1995?",
+    "answers": ["John Nash", "Paul Erdős", "Terence Tao", "Andrew Wiles"],
+    "correct": "Andrew Wiles"
+  },
+  {
+    "id": 15,
+    "question": "Which is the only country with a non-rectangular national flag?",
+    "answers": ["Bhutan", "Switzerland", "Vatican City", "Nepal"],
+    "correct": "Nepal"
+  }
+]
