@@ -38,7 +38,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "input=$(cat); cmd=$(echo \"$input\" | jq -r '.tool_input.command // \"\"'); if echo \"$cmd\" | grep -qE 'npm (test|run test)'; then if git status --porcelain | grep -q .; then files=$(git status --porcelain | awk '{print $NF}' | awk -F/ '{print $NF}' | sort -u | head -3 | tr '\\n' '|' | sed 's/|$//;s/|/, /g'); count=$(git status --porcelain | wc -l | xargs); [ \"$count\" -gt 3 ] && extra=\" (+$((count-3)) more)\" || extra=\"\"; msg=\"feat: update ${files}${extra}\"; git add -A && git commit -m \"$msg\" && printf '{\"systemMessage\":\"✔ %s\"}\\n' \"$msg\"; else echo '{\"systemMessage\":\"✔ Tests passed — nothing to commit\"}'; fi; fi",
+            "command": "cmd=$(jq -r '.tool_input.command // \"\"'); if echo \"$cmd\" | grep -qE 'npm (test|run test)'; then if git status --porcelain | grep -q .; then files=$(git status --porcelain | awk '{print $NF}' | awk -F/ '{print $NF}' | sort -u | head -3 | tr '\\n' '|' | sed 's/|$//;s/|/, /g'); count=$(git status --porcelain | wc -l | xargs); [ \"$count\" -gt 3 ] && extra=\" (+$((count-3)) more)\" || extra=\"\"; msg=\"feat: update ${files}${extra}\"; git add -A && git commit -m \"$msg\" && printf '{\"systemMessage\":\"✔ %s\"}\\n' \"$msg\"; else echo '{\"systemMessage\":\"✔ Tests passed — nothing to commit\"}'; fi; fi",
             "statusMessage": "Checking for commit..."
           }
         ]
