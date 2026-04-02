@@ -1,7 +1,13 @@
 import { useEffect, useRef } from "react";
 import Confetti from "./Confetti";
 
-export default function EndScreen({ reason, amount, onPlayAgain }) {
+export default function EndScreen({
+  reason,
+  amount,
+  correct,
+  wrong,
+  onPlayAgain,
+}) {
   const isWin = reason === "win";
   const isWalkaway = reason === "walkaway";
 
@@ -32,6 +38,11 @@ export default function EndScreen({ reason, amount, onPlayAgain }) {
               : "You go home with"}
         </div>
         <div className="end-amount gold">{amount}</div>
+
+        <div className="end-stats">
+          <div className="end-stat correct">✓ {correct} correct</div>
+          <div className="end-stat wrong">✗ {wrong} wrong</div>
+        </div>
 
         <button className="btn-primary end-btn" onClick={onPlayAgain}>
           PLAY AGAIN

@@ -23,11 +23,18 @@ export default function App() {
 
   const handleEnd = useCallback(
     (reason, amount) => {
-      setEndData({ reason, amount });
+      // history tracks Q1..Q(n-1); add current question result for win/wrong
+      const finalHistory =
+        reason === "walkaway"
+          ? game.history
+          : [...game.history, reason === "win" ? "correct" : "wrong"];
+      const correct = finalHistory.filter((r) => r === "correct").length;
+      const wrong = finalHistory.filter((r) => r === "wrong").length;
+      setEndData({ reason, amount, correct, wrong });
       setScreen("end");
       game.reset();
     },
-    [game.reset],
+    [game.reset, game.history],
   );
 
   function startNewGame() {
@@ -63,6 +70,8 @@ export default function App() {
         <EndScreen
           reason={endData.reason}
           amount={endData.amount}
+          correct={endData.correct}
+          wrong={endData.wrong}
           onPlayAgain={handlePlayAgain}
         />
       )}

@@ -724,6 +724,21 @@ body,
   font-weight: 900;
   line-height: 1;
 }
+.end-stats {
+  display: flex;
+  gap: 16px;
+}
+.end-stat {
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+.end-stat.correct {
+  color: #34d399;
+}
+.end-stat.wrong {
+  color: #f87171;
+}
+
 .end-btn {
   margin-top: 16px;
 }
