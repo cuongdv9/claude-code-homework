@@ -233,8 +233,11 @@ body,
   background: rgba(255, 255, 255, 0.1);
   transition: background 0.3s;
 }
-.progress-seg.done {
-  background: var(--accent);
+.progress-seg.correct {
+  background: #10b981;
+}
+.progress-seg.wrong {
+  background: #ef4444;
 }
 .progress-seg.current {
   background: var(--gold);

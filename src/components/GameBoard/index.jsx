@@ -23,6 +23,7 @@ export default function GameBoard({ game, onEnd }) {
     currentQuestion,
     currentAmount,
     correctCount,
+    history,
     isLastQuestion,
     selectAnswer,
     confirmAnswer,
@@ -66,6 +67,7 @@ export default function GameBoard({ game, onEnd }) {
       {phase === "feedback" && isCorrect && <Confetti />}
       <Header
         questionIndex={questionIndex}
+        history={history}
         currentAmount={currentAmount}
         lifelines={lifelines}
         timeLeft={timeLeft}

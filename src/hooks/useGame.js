@@ -22,6 +22,7 @@ export const MONEY_LADDER = [
 const INITIAL_STATE = {
   questionIndex: 0,
   correctCount: 0,
+  history: [], // 'correct' | 'wrong' per answered question
   phase: "answering", // 'answering' | 'feedback'
   selectedAnswer: null,
   isCorrect: null,
@@ -86,6 +87,7 @@ function reducer(state, action) {
         correctCount: state.isCorrect
           ? state.correctCount + 1
           : state.correctCount,
+        history: [...state.history, state.isCorrect ? "correct" : "wrong"],
         lifelines: state.lifelines,
       };
 
