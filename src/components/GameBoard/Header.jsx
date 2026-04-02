@@ -1,4 +1,24 @@
-import { SAFE_HAVEN_INDICES } from '../../hooks/useGame'
+import { SAFE_HAVEN_INDICES, MONEY_LADDER } from '../../hooks/useGame'
+
+const TOTAL = MONEY_LADDER.length
+
+function ProgressBar({ questionIndex }) {
+  return (
+    <div className="progress-bar-wrap" aria-label={`Question ${questionIndex + 1} of ${TOTAL}`}>
+      {MONEY_LADDER.map((_, i) => {
+        const done = i < questionIndex
+        const current = i === questionIndex
+        const safe = SAFE_HAVEN_INDICES.includes(i)
+        return (
+          <div
+            key={i}
+            className={`progress-seg ${done ? 'done' : ''} ${current ? 'current' : ''} ${safe ? 'safe' : ''}`}
+          />
+        )
+      })}
+    </div>
+  )
+}
 
 const TIMER_SIZE = 56
 const RADIUS = 22
@@ -41,6 +61,8 @@ export default function Header({
   const isSafe = SAFE_HAVEN_INDICES.includes(questionIndex)
 
   return (
+    <div className="header-wrap">
+    <ProgressBar questionIndex={questionIndex} />
     <div className="header">
       <div className={`level-badge ${isSafe ? 'safe-haven-badge' : ''}`}>
         <span className="level-num">Q{questionIndex + 1}</span>
@@ -76,6 +98,7 @@ export default function Header({
       </div>
 
       <TimerRing timeLeft={timeLeft} total={totalTime} />
+    </div>
     </div>
   )
 }

@@ -175,16 +175,39 @@ html, body, #root {
   overflow: hidden;
 }
 
+/* Progress bar */
+.header-wrap {
+  flex-shrink: 0;
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+}
+
+.progress-bar-wrap {
+  display: flex;
+  gap: 2px;
+  padding: 6px 8px 0;
+}
+
+.progress-seg {
+  flex: 1;
+  height: 4px;
+  border-radius: 2px;
+  background: rgba(255,255,255,0.1);
+  transition: background 0.3s;
+}
+.progress-seg.done    { background: var(--accent); }
+.progress-seg.current { background: var(--gold); }
+.progress-seg.safe    { border-radius: 2px; box-shadow: 0 0 4px var(--safe); }
+.progress-seg.done.safe    { background: var(--safe); }
+.progress-seg.current.safe { background: var(--safe); }
+
 /* Header */
 .header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 16px;
-  background: var(--bg2);
-  border-bottom: 1px solid var(--border);
+  padding: 10px 16px;
   gap: 12px;
-  flex-shrink: 0;
 }
 
 .level-badge {
