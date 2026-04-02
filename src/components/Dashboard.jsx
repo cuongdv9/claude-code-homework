@@ -1,5 +1,3 @@
-import { MONEY_LADDER } from '../hooks/useGame'
-
 export default function Dashboard({ onPlay, hasSavedGame, onResume }) {
   return (
     <div className="dashboard">
@@ -10,18 +8,6 @@ export default function Dashboard({ onPlay, hasSavedGame, onResume }) {
         </p>
       </div>
 
-      <div className="money-ladder">
-        {[...MONEY_LADDER].reverse().map((amount, i) => {
-          const index = MONEY_LADDER.length - 1 - i
-          return (
-            <div key={index} className="ladder-row">
-              <span className="ladder-num">{index + 1}</span>
-              <span className="ladder-amount">{amount}</span>
-            </div>
-          )
-        })}
-      </div>
-
       <div className="dashboard-actions">
         {hasSavedGame && (
           <button className="btn-secondary" onClick={onResume}>
@@ -29,9 +15,9 @@ export default function Dashboard({ onPlay, hasSavedGame, onResume }) {
           </button>
         )}
         <button className="btn-primary" onClick={onPlay}>
-          {hasSavedGame ? 'NEW GAME' : 'START GAME'}
+          {hasSavedGame ? "NEW GAME" : "START GAME"}
         </button>
       </div>
     </div>
-  )
+  );
 }
