@@ -5,13 +5,13 @@ import QuestionBox from './QuestionBox'
 import AnswerButtons from './AnswerButtons'
 import LifelineOverlay from './LifelineOverlay'
 
-const TIMER_SECONDS = 30
+const TIMER_SECONDS = 15
 
 export default function GameBoard({ game, onEnd }) {
   const {
     questionIndex, phase, selectedAnswer, isCorrect,
     lifelines, eliminatedAnswers, audienceData, phoneData, activeLifeline,
-    currentQuestion, currentAmount, safeHavenAmount, isLastQuestion,
+    currentQuestion, currentAmount, isLastQuestion,
     selectAnswer, confirmAnswer, nextQuestion, onTimerExpired,
     useFifty, useAudience, usePhone, closeLifeline,
   } = game
@@ -27,18 +27,20 @@ export default function GameBoard({ game, onEnd }) {
   useEffect(() => {
     if (phase !== 'feedback') return
     const delay = setTimeout(() => {
-      if (!isCorrect) {
-        onEnd('wrong', safeHavenAmount)
-      } else if (isLastQuestion) {
+      if (isCorrect && isLastQuestion) {
         onEnd('win', currentAmount)
+      } else if (!isCorrect && !isLastQuestion) {
+        nextQuestion()           // wrong or timed out → skip to next
+      } else if (!isCorrect && isLastQuestion) {
+        onEnd('wrong', '$0')   // wrong/timeout on last Q → end
       }
       // correct + not last: wait for user to tap Continue
-    }, 1800)
+    }, 1500)
     return () => clearTimeout(delay)
   }, [phase, isCorrect, isLastQuestion])
 
   function handleWalkAway() {
-    onEnd('walkaway', safeHavenAmount)
+    onEnd('walkaway', currentAmount)
   }
 
   return (
@@ -80,7 +82,7 @@ export default function GameBoard({ game, onEnd }) {
 
         {phase === 'answering' && (
           <button className="btn-walkaway" onClick={handleWalkAway}>
-            Walk Away ({safeHavenAmount})
+            Walk Away
           </button>
         )}
       </div>

@@ -1,4 +1,4 @@
-import { SAFE_HAVEN_INDICES, MONEY_LADDER } from '../../hooks/useGame'
+import { MONEY_LADDER } from '../../hooks/useGame'
 
 const TOTAL = MONEY_LADDER.length
 
@@ -8,11 +8,10 @@ function ProgressBar({ questionIndex }) {
       {MONEY_LADDER.map((_, i) => {
         const done = i < questionIndex
         const current = i === questionIndex
-        const safe = SAFE_HAVEN_INDICES.includes(i)
         return (
           <div
             key={i}
-            className={`progress-seg ${done ? 'done' : ''} ${current ? 'current' : ''} ${safe ? 'safe' : ''}`}
+            className={`progress-seg ${done ? 'done' : ''} ${current ? 'current' : ''}`}
           />
         )
       })}
@@ -58,16 +57,13 @@ export default function Header({
   onUseAudience,
   onUsePhone,
 }) {
-  const isSafe = SAFE_HAVEN_INDICES.includes(questionIndex)
-
   return (
     <div className="header-wrap">
     <ProgressBar questionIndex={questionIndex} />
     <div className="header">
-      <div className={`level-badge ${isSafe ? 'safe-haven-badge' : ''}`}>
+      <div className="level-badge">
         <span className="level-num">Q{questionIndex + 1}</span>
         <span className="level-amount">{currentAmount}</span>
-        {isSafe && <span className="safe-indicator">⭐ SAFE HAVEN</span>}
       </div>
 
       <div className="lifelines">

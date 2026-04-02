@@ -150,20 +150,8 @@ html, body, #root {
   gap: 10px;
 }
 .ladder-row:last-child { border-bottom: none; }
-.ladder-row.safe-haven { background: rgba(251,191,36,0.08); }
-
 .ladder-num { width: 24px; font-size: 0.75rem; color: var(--text-dim); }
 .ladder-amount { flex: 1; font-weight: 700; font-size: 0.9rem; }
-.safe-tag {
-  font-size: 0.65rem;
-  font-weight: 800;
-  color: var(--gold);
-  border: 1px solid var(--gold);
-  padding: 1px 5px;
-  border-radius: 3px;
-  letter-spacing: 0.05em;
-}
-.ladder-row.safe-haven .ladder-amount { color: var(--gold); }
 
 .dashboard-actions { display: flex; flex-direction: column; gap: 10px; }
 
@@ -197,9 +185,6 @@ html, body, #root {
 }
 .progress-seg.done    { background: var(--accent); }
 .progress-seg.current { background: var(--gold); }
-.progress-seg.safe    { border-radius: 2px; box-shadow: 0 0 4px var(--safe); }
-.progress-seg.done.safe    { background: var(--safe); }
-.progress-seg.current.safe { background: var(--safe); }
 
 /* Header */
 .header {
@@ -215,11 +200,9 @@ html, body, #root {
   flex-direction: column;
   line-height: 1.2;
 }
-.level-badge.safe-haven-badge .level-amount { color: var(--gold); }
 
 .level-num { font-size: 0.7rem; color: var(--text-dim); text-transform: uppercase; }
 .level-amount { font-size: 1.1rem; font-weight: 800; }
-.safe-indicator { font-size: 0.6rem; color: var(--gold); }
 
 .lifelines { display: flex; gap: 8px; }
 

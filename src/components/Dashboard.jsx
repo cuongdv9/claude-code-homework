@@ -1,4 +1,4 @@
-import { MONEY_LADDER, SAFE_HAVEN_INDICES } from '../hooks/useGame'
+import { MONEY_LADDER } from '../hooks/useGame'
 
 export default function Dashboard({ onPlay, hasSavedGame, onResume }) {
   return (
@@ -13,12 +13,10 @@ export default function Dashboard({ onPlay, hasSavedGame, onResume }) {
       <div className="money-ladder">
         {[...MONEY_LADDER].reverse().map((amount, i) => {
           const index = MONEY_LADDER.length - 1 - i
-          const isSafe = SAFE_HAVEN_INDICES.includes(index)
           return (
-            <div key={index} className={`ladder-row ${isSafe ? 'safe-haven' : ''}`}>
+            <div key={index} className="ladder-row">
               <span className="ladder-num">{index + 1}</span>
               <span className="ladder-amount">{amount}</span>
-              {isSafe && <span className="safe-tag">SAFE</span>}
             </div>
           )
         })}

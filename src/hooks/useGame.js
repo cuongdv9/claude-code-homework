@@ -7,20 +7,13 @@ export const MONEY_LADDER = [
   '$64,000', '$125,000', '$250,000', '$500,000', '$1,000,000',
 ]
 
-export const SAFE_HAVEN_INDICES = [4, 9]
-
-export function getSafeHavenAmount(questionIndex) {
-  for (let i = SAFE_HAVEN_INDICES.length - 1; i >= 0; i--) {
-    if (questionIndex > SAFE_HAVEN_INDICES[i]) return MONEY_LADDER[SAFE_HAVEN_INDICES[i]]
-  }
-  return '$0'
-}
 
 const INITIAL_STATE = {
   questionIndex: 0,
   phase: 'answering',      // 'answering' | 'feedback'
   selectedAnswer: null,
   isCorrect: null,
+  timedOut: false,
   lifelines: { fifty: true, audience: true, phone: true },
   eliminatedAnswers: [],
   audienceData: null,
@@ -33,7 +26,7 @@ function generateAudienceData(answers, correct) {
   const remaining = 100 - correctPct
   const wrongAnswers = answers.filter(a => a !== correct)
   const splits = splitRandomly(remaining, wrongAnswers.length)
-  return answers.map((a, i) => {
+  return answers.map((a) => {
     if (a === correct) return correctPct
     return splits[wrongAnswers.indexOf(a)]
   })
@@ -68,7 +61,7 @@ function reducer(state, action) {
 
     case 'TIMER_EXPIRED':
       if (state.phase !== 'answering') return state
-      return { ...state, phase: 'feedback', isCorrect: false }
+      return { ...state, phase: 'feedback', isCorrect: false, timedOut: true }
 
     case 'NEXT_QUESTION':
       return {
@@ -140,7 +133,6 @@ export function useGame() {
 
   const currentQuestion = questions[state.questionIndex]
   const currentAmount = MONEY_LADDER[state.questionIndex]
-  const safeHavenAmount = getSafeHavenAmount(state.questionIndex)
   const isLastQuestion = state.questionIndex === questions.length - 1
 
   const selectAnswer = useCallback(answer => {
@@ -167,7 +159,6 @@ export function useGame() {
     ...state,
     currentQuestion,
     currentAmount,
-    safeHavenAmount,
     isLastQuestion,
     selectAnswer,
     confirmAnswer,
