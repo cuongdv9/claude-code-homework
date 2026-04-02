@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useTimer } from "../../hooks/useTimer";
 import { MONEY_LADDER } from "../../hooks/useGame";
+import { playCorrect, playWrong, playTick } from "../../utils/audio";
 import Header from "./Header";
 import QuestionBox from "./QuestionBox";
 import AnswerButtons from "./AnswerButtons";
@@ -41,6 +42,19 @@ export default function GameBoard({ game, onEnd }) {
     resetKey: questionIndex,
     onExpire: onTimerExpired,
   });
+
+  // Feedback sounds
+  useEffect(() => {
+    if (phase !== "feedback") return;
+    if (isCorrect) playCorrect();
+    else playWrong();
+  }, [phase]);
+
+  // Timer tick
+  useEffect(() => {
+    if (phase !== "answering" || timeLeft === TIMER_SECONDS) return;
+    playTick(timeLeft <= 5);
+  }, [timeLeft]);
 
   // After feedback: auto-advance or end game after delay
   useEffect(() => {
