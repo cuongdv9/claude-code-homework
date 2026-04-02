@@ -38,8 +38,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "jq -r '.tool_input.command' | grep -qE 'npm (test|run test)' && git status --porcelain | grep -q . && git add -A && git commit -m \"chore: auto-commit after passing tests\" 2>/dev/null || true",
-            "statusMessage": "Committing..."
+            "command": "input=$(cat); cmd=$(echo \"$input\" | jq -r '.tool_input.command // \"\"'); if echo \"$cmd\" | grep -qE 'npm (test|run test)'; then if git status --porcelain | grep -q .; then git add -A && git commit -m \"chore: auto-commit after passing tests\" && echo '{\"systemMessage\": \"✔ Committed after passing tests\"}'; else echo '{\"systemMessage\": \"✔ Tests passed — nothing to commit\"}'; fi; fi",
+            "statusMessage": "Checking for commit..."
           }
         ]
       }
