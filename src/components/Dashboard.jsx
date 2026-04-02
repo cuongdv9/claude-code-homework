@@ -1,11 +1,11 @@
 export default function Dashboard({ onPlay, hasSavedGame, onResume }) {
   return (
     <div className="dashboard">
-      <div className="dashboard-header">
-        <h1 className="dashboard-title">QuizMillionaire</h1>
-        <p className="dashboard-desc">
-          Answer 15 questions to win <span className="gold">$1,000,000</span>
-        </p>
+      <div className="splash-logo">
+        <div className="splash-title">Quiz</div>
+        <div className="splash-subtitle">MILLIONAIRE</div>
+        <div className="splash-divider" />
+        <div className="splash-tagline">Who wants to be a millionaire?</div>
       </div>
 
       <div className="dashboard-actions">

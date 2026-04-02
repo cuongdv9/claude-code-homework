@@ -1,50 +1,50 @@
-import { useState, useCallback } from 'react'
-import { useGame } from './hooks/useGame'
-import SplashScreen from './components/SplashScreen'
-import Dashboard from './components/Dashboard'
-import GameBoard from './components/GameBoard'
-import EndScreen from './components/EndScreen'
+import { useState, useCallback } from "react";
+import { useGame } from "./hooks/useGame";
+import Dashboard from "./components/Dashboard";
+import GameBoard from "./components/GameBoard";
+import EndScreen from "./components/EndScreen";
 
-const STORAGE_KEY = 'quizMillionaire_state'
+const STORAGE_KEY = "quizMillionaire_state";
 
 function hasSavedGame() {
   try {
-    return !!localStorage.getItem(STORAGE_KEY)
-  } catch { return false }
+    return !!localStorage.getItem(STORAGE_KEY);
+  } catch {
+    return false;
+  }
 }
 
 export default function App() {
-  const [screen, setScreen] = useState('splash')
-  const [endData, setEndData] = useState(null)
-  const game = useGame()
+  const [screen, setScreen] = useState("dashboard");
+  const [endData, setEndData] = useState(null);
+  const game = useGame();
 
-  const handleEnd = useCallback((reason, amount) => {
-    setEndData({ reason, amount })
-    setScreen('end')
-    game.reset()
-  }, [game.reset])
+  const handleEnd = useCallback(
+    (reason, amount) => {
+      setEndData({ reason, amount });
+      setScreen("end");
+      game.reset();
+    },
+    [game.reset],
+  );
 
   function startNewGame() {
-    game.reset()
-    setScreen('game')
+    game.reset();
+    setScreen("game");
   }
 
   function resumeGame() {
-    setScreen('game')
+    setScreen("game");
   }
 
   function handlePlayAgain() {
-    setEndData(null)
-    setScreen('dashboard')
+    setEndData(null);
+    setScreen("dashboard");
   }
 
   return (
     <div className="app">
-      {screen === 'splash' && (
-        <SplashScreen onContinue={() => setScreen('dashboard')} />
-      )}
-
-      {screen === 'dashboard' && (
+      {screen === "dashboard" && (
         <Dashboard
           onPlay={startNewGame}
           hasSavedGame={hasSavedGame()}
@@ -52,11 +52,9 @@ export default function App() {
         />
       )}
 
-      {screen === 'game' && (
-        <GameBoard game={game} onEnd={handleEnd} />
-      )}
+      {screen === "game" && <GameBoard game={game} onEnd={handleEnd} />}
 
-      {screen === 'end' && endData && (
+      {screen === "end" && endData && (
         <EndScreen
           reason={endData.reason}
           amount={endData.amount}
@@ -64,5 +62,5 @@ export default function App() {
         />
       )}
     </div>
-  )
+  );
 }
