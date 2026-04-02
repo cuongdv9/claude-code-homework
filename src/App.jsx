@@ -5,16 +5,6 @@ import Dashboard from "./components/Dashboard";
 import GameBoard from "./components/GameBoard";
 import EndScreen from "./components/EndScreen";
 
-const STORAGE_KEY = "quizMillionaire_state";
-
-function hasSavedGame() {
-  try {
-    return !!localStorage.getItem(STORAGE_KEY);
-  } catch {
-    return false;
-  }
-}
-
 export default function App() {
   const [screen, setScreen] = useState("dashboard");
   const [endData, setEndData] = useState(null);
@@ -42,10 +32,6 @@ export default function App() {
     setScreen("game");
   }
 
-  function resumeGame() {
-    setScreen("game");
-  }
-
   function handlePlayAgain() {
     setEndData(null);
     setScreen("dashboard");
@@ -56,8 +42,6 @@ export default function App() {
       {screen === "dashboard" && (
         <Dashboard
           onPlay={startNewGame}
-          hasSavedGame={hasSavedGame()}
-          onResume={resumeGame}
           theme={theme}
           themes={themes}
           onThemeChange={setTheme}

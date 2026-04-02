@@ -1,11 +1,4 @@
-export default function Dashboard({
-  onPlay,
-  hasSavedGame,
-  onResume,
-  theme,
-  themes,
-  onThemeChange,
-}) {
+export default function Dashboard({ onPlay, theme, themes, onThemeChange }) {
   return (
     <div className="dashboard">
       <div className="splash-logo">
@@ -28,13 +21,8 @@ export default function Dashboard({
       </div>
 
       <div className="dashboard-actions">
-        {hasSavedGame && (
-          <button className="btn-secondary" onClick={onResume}>
-            RESUME GAME
-          </button>
-        )}
         <button className="btn-primary" onClick={onPlay}>
-          {hasSavedGame ? "NEW GAME" : "START GAME"}
+          START GAME
         </button>
       </div>
     </div>
