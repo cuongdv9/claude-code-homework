@@ -38,7 +38,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "cmd=$(jq -r '.tool_input.command // \"\"'); if echo \"$cmd\" | grep -qE 'npm (test|run test)'; then if git status --porcelain | grep -q .; then files=$(git status --porcelain | awk '{print $NF}' | awk -F/ '{print $NF}' | sort -u | head -3 | tr '\\n' '|' | sed 's/|$//;s/|/, /g'); count=$(git status --porcelain | wc -l | xargs); [ \"$count\" -gt 3 ] && extra=\" (+$((count-3)) more)\" || extra=\"\"; msg=\"feat: update ${files}${extra}\"; git add -A && git commit -m \"$msg\" && printf '{\"systemMessage\":\"✔ %s\"}\\n' \"$msg\"; else echo '{\"systemMessage\":\"✔ Tests passed — nothing to commit\"}'; fi; fi",
+            "command": "tmp=$(mktemp); cat > \"$tmp\"; cmd=$(jq -r '.tool_input.command // \"\"' < \"$tmp\"); if echo \"$cmd\" | grep -qE 'npm (test|run test)'; then if git status --porcelain | grep -q .; then tp=$(jq -r '.transcript_path // \"\"' < \"$tmp\"); msg=\"\"; if [ -n \"$tp\" ] && [ -f \"$tp\" ]; then msg=$(grep -a '\"type\":\"user\"' \"$tp\" | jq -r '.message.content | if type==\"array\" then (map(select(.type==\"text\")) | first | .text) else . end' 2>/dev/null | grep -v '^null$' | tail -1 | tr -s '\\n\\r\\t ' ' ' | sed 's/^ //;s/ $//' | cut -c1-72); fi; [ -z \"$msg\" ] && msg=\"chore: auto-commit after tests\"; git add -A && git commit -m \"$msg\" && printf '{\"systemMessage\":\"✔ %s\"}\\n' \"$msg\"; else echo '{\"systemMessage\":\"✔ Tests passed — nothing to commit\"}'; fi; fi; rm -f \"$tmp\"",
             "statusMessage": "Checking for commit..."
           }
         ]
