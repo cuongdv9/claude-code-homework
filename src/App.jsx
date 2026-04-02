@@ -1,5 +1,6 @@
 import { useState, useCallback } from "react";
 import { useGame } from "./hooks/useGame";
+import { useTheme } from "./hooks/useTheme";
 import Dashboard from "./components/Dashboard";
 import GameBoard from "./components/GameBoard";
 import EndScreen from "./components/EndScreen";
@@ -18,6 +19,7 @@ export default function App() {
   const [screen, setScreen] = useState("dashboard");
   const [endData, setEndData] = useState(null);
   const game = useGame();
+  const { theme, setTheme, themes } = useTheme();
 
   const handleEnd = useCallback(
     (reason, amount) => {
@@ -49,6 +51,9 @@ export default function App() {
           onPlay={startNewGame}
           hasSavedGame={hasSavedGame()}
           onResume={resumeGame}
+          theme={theme}
+          themes={themes}
+          onThemeChange={setTheme}
         />
       )}
 
