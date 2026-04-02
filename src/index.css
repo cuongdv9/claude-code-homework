@@ -726,7 +726,9 @@ body,
 }
 .end-stats {
   display: flex;
-  gap: 16px;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px 20px;
 }
 .end-stat {
   font-size: 0.95rem;
@@ -737,6 +739,12 @@ body,
 }
 .end-stat.wrong {
   color: #f87171;
+}
+.end-stat.accuracy {
+  color: var(--gold);
+}
+.end-stat.time {
+  color: var(--text-dim);
 }
 
 .end-btn {

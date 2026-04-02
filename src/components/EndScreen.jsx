@@ -6,6 +6,8 @@ export default function EndScreen({
   amount,
   correct,
   wrong,
+  accuracy,
+  timeTaken,
   onPlayAgain,
 }) {
   const isWin = reason === "win";
@@ -42,6 +44,8 @@ export default function EndScreen({
         <div className="end-stats">
           <div className="end-stat correct">✓ {correct} correct</div>
           <div className="end-stat wrong">✗ {wrong} wrong</div>
+          <div className="end-stat accuracy">{accuracy}% accuracy</div>
+          <div className="end-stat time">⏱ {timeTaken}</div>
         </div>
 
         <button className="btn-primary end-btn" onClick={onPlayAgain}>
