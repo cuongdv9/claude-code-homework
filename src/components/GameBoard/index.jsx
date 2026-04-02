@@ -43,6 +43,8 @@ export default function GameBoard({ game, onEnd }) {
     onExpire: onTimerExpired,
   });
 
+  if (!currentQuestion) return null;
+
   // Feedback sounds
   useEffect(() => {
     if (phase !== "feedback") return;

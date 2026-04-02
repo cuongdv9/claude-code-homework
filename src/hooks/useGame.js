@@ -6,6 +6,18 @@ function pickQuestions() {
   return shuffled.slice(0, 15);
 }
 
+function validateQuestions(qs) {
+  return qs.every(
+    (q) => Array.isArray(q.answers) && q.answers.includes(q.correct),
+  );
+}
+
+if (!validateQuestions(allQuestions)) {
+  console.error(
+    "Invalid question data: some questions have a 'correct' value not in 'answers'",
+  );
+}
+
 export const MONEY_LADDER = [
   "$100",
   "$200",
@@ -103,10 +115,16 @@ function reducer(state, action) {
     case "USE_FIFTY": {
       if (!state.lifelines.fifty || state.phase !== "answering") return state;
       const q = state.questions[state.questionIndex];
-      const wrong = q.answers.filter(
-        (a) => a !== q.correct && a !== state.selectedAnswer,
-      );
-      const toRemove = wrong.sort(() => Math.random() - 0.5).slice(0, 2);
+      const wrong = q.answers.filter((a) => a !== q.correct);
+      // Keep selected answer if it's wrong, remove the other two wrong answers
+      const preserve =
+        state.selectedAnswer && state.selectedAnswer !== q.correct
+          ? state.selectedAnswer
+          : null;
+      const toRemove = wrong
+        .filter((a) => a !== preserve)
+        .sort(() => Math.random() - 0.5)
+        .slice(0, 2);
       return {
         ...state,
         lifelines: { ...state.lifelines, fifty: false },
@@ -166,7 +184,11 @@ export function useGame() {
   });
 
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    } catch {
+      // localStorage quota exceeded or unavailable — silently ignore
+    }
   }, [state]);
 
   const currentQuestion = state.questions[state.questionIndex];
@@ -176,13 +198,14 @@ export function useGame() {
 
   const selectAnswer = useCallback(
     (answer) => {
+      if (state.phase !== "answering") return;
       if (state.selectedAnswer === answer) {
         dispatch({ type: "CONFIRM_ANSWER" });
       } else {
         dispatch({ type: "SELECT_ANSWER", answer });
       }
     },
-    [state.selectedAnswer],
+    [state.selectedAnswer, state.phase],
   );
 
   const confirmAnswer = useCallback(
