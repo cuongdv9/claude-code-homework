@@ -1,0 +1,277 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="900" viewBox="0 0 480 900">
+  <defs>
+    <!-- Deep background gradient -->
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%"   stop-color="#010510"/>
+      <stop offset="50%"  stop-color="#020d28"/>
+      <stop offset="100%" stop-color="#040f1e"/>
+    </linearGradient>
+
+    <!-- Stage floor glow -->
+    <radialGradient id="stageGlow" cx="50%" cy="30%" r="60%">
+      <stop offset="0%"   stop-color="#1d4ed8" stop-opacity="0.55"/>
+      <stop offset="40%"  stop-color="#1e3a8a" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#020d28" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Hot seat floor circle -->
+    <radialGradient id="seatFloor" cx="50%" cy="50%" r="50%">
+      <stop offset="0%"   stop-color="#60a5fa" stop-opacity="0.55"/>
+      <stop offset="50%"  stop-color="#3b82f6" stop-opacity="0.20"/>
+      <stop offset="100%" stop-color="#1e3a8a" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Spotlight beam gradients -->
+    <linearGradient id="beamL1" x1="0" y1="0" x2="0.3" y2="1">
+      <stop offset="0%"   stop-color="#93c5fd" stop-opacity="0.50"/>
+      <stop offset="100%" stop-color="#3b82f6" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="beamL2" x1="0" y1="0" x2="0.2" y2="1">
+      <stop offset="0%"   stop-color="#bfdbfe" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#60a5fa" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="beamR1" x1="1" y1="0" x2="0.7" y2="1">
+      <stop offset="0%"   stop-color="#93c5fd" stop-opacity="0.50"/>
+      <stop offset="100%" stop-color="#3b82f6" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="beamR2" x1="1" y1="0" x2="0.8" y2="1">
+      <stop offset="0%"   stop-color="#bfdbfe" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#60a5fa" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="beamC" x1="0.5" y1="0" x2="0.5" y2="1">
+      <stop offset="0%"   stop-color="#ffffff" stop-opacity="0.40"/>
+      <stop offset="100%" stop-color="#60a5fa" stop-opacity="0"/>
+    </linearGradient>
+
+    <!-- Pillar glow -->
+    <radialGradient id="pillarGlowL" cx="100%" cy="50%" r="100%">
+      <stop offset="0%"   stop-color="#3b82f6" stop-opacity="0.45"/>
+      <stop offset="100%" stop-color="#3b82f6" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="pillarGlowR" cx="0%" cy="50%" r="100%">
+      <stop offset="0%"   stop-color="#3b82f6" stop-opacity="0.45"/>
+      <stop offset="100%" stop-color="#3b82f6" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Audience row glow -->
+    <linearGradient id="rowGlow" x1="0" y1="0.5" x2="1" y2="0.5">
+      <stop offset="0%"   stop-color="#1e3a8a" stop-opacity="0"/>
+      <stop offset="30%"  stop-color="#2563eb" stop-opacity="0.25"/>
+      <stop offset="50%"  stop-color="#3b82f6" stop-opacity="0.35"/>
+      <stop offset="70%"  stop-color="#2563eb" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#1e3a8a" stop-opacity="0"/>
+    </linearGradient>
+
+    <filter id="glow3">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="glow8">
+      <feGaussianBlur stdDeviation="8"/>
+    </filter>
+    <filter id="softBlur">
+      <feGaussianBlur stdDeviation="12"/>
+    </filter>
+  </defs>
+
+  <!-- ── BASE ── -->
+  <rect width="480" height="900" fill="url(#bgGrad)"/>
+
+  <!-- ── AMBIENT STAGE GLOW ── -->
+  <ellipse cx="240" cy="500" rx="300" ry="280" fill="url(#stageGlow)"/>
+
+  <!-- ── SPOTLIGHT BEAMS — left bank ── -->
+  <!-- Far left beam -->
+  <polygon points="40,0 70,0 230,680 195,680"
+    fill="url(#beamL1)" opacity="0.6"/>
+  <!-- Second left beam -->
+  <polygon points="90,0 115,0 245,680 225,680"
+    fill="url(#beamL2)" opacity="0.5"/>
+  <!-- Third left beam -->
+  <polygon points="140,0 158,0 248,680 236,680"
+    fill="url(#beamL2)" opacity="0.35"/>
+
+  <!-- ── SPOTLIGHT BEAMS — right bank ── -->
+  <!-- Far right beam -->
+  <polygon points="440,0 410,0 250,680 285,680"
+    fill="url(#beamR1)" opacity="0.6"/>
+  <!-- Second right beam -->
+  <polygon points="390,0 365,0 255,680 272,680"
+    fill="url(#beamR2)" opacity="0.5"/>
+  <!-- Third right beam -->
+  <polygon points="340,0 322,0 252,680 244,680"
+    fill="url(#beamR2)" opacity="0.35"/>
+
+  <!-- ── CENTER BEAM — directly above hot seat ── -->
+  <polygon points="215,0 265,0 260,680 220,680"
+    fill="url(#beamC)" opacity="0.55"/>
+
+  <!-- ── BEAM GLOW SOFT OVERLAY ── -->
+  <ellipse cx="240" cy="680" rx="180" ry="60" fill="#1d4ed8" fill-opacity="0.20" filter="url(#softBlur)"/>
+
+  <!-- ── AUDIENCE SEATING — curved tiers ── -->
+  <!-- Tier 6 (farthest back) -->
+  <path d="M 10,360 Q 240,300 470,360" fill="none" stroke="#1e40af" stroke-opacity="0.28" stroke-width="12"/>
+  <!-- Tier 5 -->
+  <path d="M 20,395 Q 240,338 460,395" fill="none" stroke="#1e40af" stroke-opacity="0.30" stroke-width="11"/>
+  <!-- Tier 4 -->
+  <path d="M 28,432 Q 240,378 452,432" fill="none" stroke="#1d4ed8" stroke-opacity="0.32" stroke-width="10"/>
+  <!-- Tier 3 -->
+  <path d="M 35,470 Q 240,418 445,470" fill="none" stroke="#2563eb" stroke-opacity="0.30" stroke-width="10"/>
+  <!-- Tier 2 -->
+  <path d="M 40,510 Q 240,460 440,510" fill="none" stroke="#2563eb" stroke-opacity="0.26" stroke-width="9"/>
+  <!-- Tier 1 (closest) -->
+  <path d="M 44,550 Q 240,502 436,550" fill="none" stroke="#3b82f6" stroke-opacity="0.22" stroke-width="8"/>
+
+  <!-- Seat dots on tier 3 -->
+  <g fill="#60a5fa" fill-opacity="0.18">
+    <circle cx="55"  cy="466" r="2.5"/>
+    <circle cx="80"  cy="456" r="2.5"/>
+    <circle cx="110" cy="447" r="2.5"/>
+    <circle cx="140" cy="440" r="2.5"/>
+    <circle cx="170" cy="435" r="2.5"/>
+    <circle cx="200" cy="431" r="2.5"/>
+    <circle cx="240" cy="429" r="2.5"/>
+    <circle cx="280" cy="431" r="2.5"/>
+    <circle cx="310" cy="435" r="2.5"/>
+    <circle cx="340" cy="440" r="2.5"/>
+    <circle cx="370" cy="447" r="2.5"/>
+    <circle cx="400" cy="456" r="2.5"/>
+    <circle cx="425" cy="466" r="2.5"/>
+  </g>
+  <!-- Seat dots on tier 2 -->
+  <g fill="#60a5fa" fill-opacity="0.14">
+    <circle cx="52"  cy="506" r="2.5"/>
+    <circle cx="82"  cy="494" r="2.5"/>
+    <circle cx="115" cy="484" r="2.5"/>
+    <circle cx="148" cy="476" r="2.5"/>
+    <circle cx="180" cy="470" r="2.5"/>
+    <circle cx="210" cy="466" r="2.5"/>
+    <circle cx="240" cy="464" r="2.5"/>
+    <circle cx="270" cy="466" r="2.5"/>
+    <circle cx="300" cy="470" r="2.5"/>
+    <circle cx="332" cy="476" r="2.5"/>
+    <circle cx="365" cy="484" r="2.5"/>
+    <circle cx="398" cy="494" r="2.5"/>
+    <circle cx="428" cy="506" r="2.5"/>
+  </g>
+
+  <!-- ── STAGE PLATFORM ── -->
+  <!-- Outer rim glow -->
+  <ellipse cx="240" cy="700" rx="265" ry="72" fill="#1e3a8a" fill-opacity="0.18"/>
+  <!-- Stage floor -->
+  <ellipse cx="240" cy="698" rx="255" ry="65"
+    fill="#0d1f4e" fill-opacity="0.80"/>
+  <!-- Stage floor edge highlight -->
+  <ellipse cx="240" cy="698" rx="255" ry="65"
+    fill="none" stroke="#3b82f6" stroke-opacity="0.35" stroke-width="1.5"/>
+  <!-- Stage floor inner circle -->
+  <ellipse cx="240" cy="698" rx="160" ry="42"
+    fill="none" stroke="#2563eb" stroke-opacity="0.20" stroke-width="1"/>
+
+  <!-- ── HOT SEAT GLOW ── -->
+  <ellipse cx="240" cy="692" rx="75" ry="22" fill="url(#seatFloor)"/>
+  <!-- Hot seat floor ring -->
+  <ellipse cx="240" cy="692" rx="60" ry="16"
+    fill="none" stroke="#60a5fa" stroke-opacity="0.45" stroke-width="1.5"/>
+  <ellipse cx="240" cy="692" rx="40" ry="10"
+    fill="none" stroke="#93c5fd" stroke-opacity="0.30" stroke-width="1"/>
+
+  <!-- ── HOT SEAT CHAIR — simplified side view ── -->
+  <!-- Seat base -->
+  <rect x="222" y="656" width="36" height="6" rx="3"
+    fill="#1e3a8a" stroke="#3b82f6" stroke-opacity="0.50" stroke-width="1"/>
+  <!-- Seat back -->
+  <rect x="225" y="630" width="30" height="28" rx="4"
+    fill="#0f2060" stroke="#3b82f6" stroke-opacity="0.50" stroke-width="1"/>
+  <!-- Seat back highlight -->
+  <rect x="228" y="633" width="24" height="20" rx="3"
+    fill="none" stroke="#60a5fa" stroke-opacity="0.25" stroke-width="0.8"/>
+  <!-- Chair legs -->
+  <line x1="228" y1="662" x2="224" y2="675" stroke="#3b82f6" stroke-opacity="0.40" stroke-width="1.5"/>
+  <line x1="252" y1="662" x2="256" y2="675" stroke="#3b82f6" stroke-opacity="0.40" stroke-width="1.5"/>
+  <!-- Armrests -->
+  <line x1="225" y1="648" x2="215" y2="650" stroke="#3b82f6" stroke-opacity="0.40" stroke-width="1.5"/>
+  <line x1="255" y1="648" x2="265" y2="650" stroke="#3b82f6" stroke-opacity="0.40" stroke-width="1.5"/>
+
+  <!-- ── PILLARS ── -->
+  <!-- Left pillar -->
+  <rect x="18" y="350" width="14" height="330" rx="3"
+    fill="#0a1840" stroke="#1e3a8a" stroke-opacity="0.60" stroke-width="1"/>
+  <rect x="20" y="350" width="10" height="330" rx="2"
+    fill="none" stroke="#3b82f6" stroke-opacity="0.20" stroke-width="0.5"/>
+  <ellipse cx="25" cy="350" rx="12" ry="5" fill="#3b82f6" fill-opacity="0.30" filter="url(#glow8)"/>
+  <ellipse cx="25" cy="680" rx="12" ry="5" fill="#3b82f6" fill-opacity="0.25" filter="url(#glow8)"/>
+  <!-- Left pillar glow -->
+  <rect x="0" y="350" width="60" height="330"
+    fill="url(#pillarGlowL)" opacity="0.5"/>
+
+  <!-- Right pillar -->
+  <rect x="448" y="350" width="14" height="330" rx="3"
+    fill="#0a1840" stroke="#1e3a8a" stroke-opacity="0.60" stroke-width="1"/>
+  <rect x="450" y="350" width="10" height="330" rx="2"
+    fill="none" stroke="#3b82f6" stroke-opacity="0.20" stroke-width="0.5"/>
+  <ellipse cx="455" cy="350" rx="12" ry="5" fill="#3b82f6" fill-opacity="0.30" filter="url(#glow8)"/>
+  <ellipse cx="455" cy="680" rx="12" ry="5" fill="#3b82f6" fill-opacity="0.25" filter="url(#glow8)"/>
+  <!-- Right pillar glow -->
+  <rect x="420" y="350" width="60" height="330"
+    fill="url(#pillarGlowR)" opacity="0.5"/>
+
+  <!-- ── SPOTLIGHT LAMP FIXTURES — top ── -->
+  <g fill="#1e40af" stroke="#3b82f6" stroke-opacity="0.5" stroke-width="0.8">
+    <!-- Left bank lamps -->
+    <rect x="30"  y="0" width="20" height="8" rx="2"/>
+    <rect x="80"  y="0" width="20" height="8" rx="2"/>
+    <rect x="130" y="0" width="20" height="8" rx="2"/>
+    <!-- Right bank lamps -->
+    <rect x="430" y="0" width="20" height="8" rx="2"/>
+    <rect x="380" y="0" width="20" height="8" rx="2"/>
+    <rect x="330" y="0" width="20" height="8" rx="2"/>
+    <!-- Center lamp -->
+    <rect x="220" y="0" width="40" height="8" rx="2"/>
+  </g>
+  <!-- Lamp glow dots -->
+  <g filter="url(#glow3)">
+    <circle cx="40"  cy="4" r="4" fill="#60a5fa" fill-opacity="0.80"/>
+    <circle cx="90"  cy="4" r="4" fill="#93c5fd" fill-opacity="0.70"/>
+    <circle cx="140" cy="4" r="4" fill="#93c5fd" fill-opacity="0.60"/>
+    <circle cx="440" cy="4" r="4" fill="#60a5fa" fill-opacity="0.80"/>
+    <circle cx="390" cy="4" r="4" fill="#93c5fd" fill-opacity="0.70"/>
+    <circle cx="340" cy="4" r="4" fill="#93c5fd" fill-opacity="0.60"/>
+    <circle cx="240" cy="4" r="5" fill="#ffffff"  fill-opacity="0.70"/>
+  </g>
+
+  <!-- ── FLOOR REFLECTION ── -->
+  <!-- Light reflections on stage floor -->
+  <ellipse cx="240" cy="720" rx="40" ry="8" fill="#60a5fa" fill-opacity="0.06"/>
+  <ellipse cx="160" cy="718" rx="22" ry="5" fill="#3b82f6" fill-opacity="0.05"/>
+  <ellipse cx="320" cy="718" rx="22" ry="5" fill="#3b82f6" fill-opacity="0.05"/>
+
+  <!-- ── CEILING STRUCTURE ── -->
+  <line x1="0"   y1="0" x2="240" y2="280" stroke="#1e3a8a" stroke-opacity="0.18" stroke-width="1"/>
+  <line x1="480" y1="0" x2="240" y2="280" stroke="#1e3a8a" stroke-opacity="0.18" stroke-width="1"/>
+  <line x1="0"   y1="0" x2="0"   y2="350" stroke="#1e3a8a" stroke-opacity="0.25" stroke-width="1"/>
+  <line x1="480" y1="0" x2="480" y2="350" stroke="#1e3a8a" stroke-opacity="0.25" stroke-width="1"/>
+
+  <!-- ── STEPS TO STAGE ── -->
+  <ellipse cx="240" cy="755" rx="80" ry="12" fill="#0d1f4e" fill-opacity="0.60" stroke="#2563eb" stroke-opacity="0.18" stroke-width="1"/>
+  <ellipse cx="240" cy="772" rx="55" ry="8"  fill="#0d1f4e" fill-opacity="0.50" stroke="#2563eb" stroke-opacity="0.15" stroke-width="1"/>
+
+  <!-- ── SUBTLE FLOOR GRID ── -->
+  <g stroke="#1e3a8a" stroke-opacity="0.12" stroke-width="0.8">
+    <!-- Perspective lines on floor -->
+    <line x1="240" y1="580" x2="-20"  y2="900"/>
+    <line x1="240" y1="580" x2="120"  y2="900"/>
+    <line x1="240" y1="580" x2="240"  y2="900"/>
+    <line x1="240" y1="580" x2="360"  y2="900"/>
+    <line x1="240" y1="580" x2="500"  y2="900"/>
+    <!-- Cross lines (perspective arcs simplified) -->
+    <line x1="60"  y1="700" x2="420" y2="700"/>
+    <line x1="40"  y1="730" x2="440" y2="730"/>
+    <line x1="20"  y1="760" x2="460" y2="760"/>
+  </g>
+
+  <!-- ── TOP VIGNETTE ── -->
+  <rect width="480" height="100"
+    fill="url(#bgGrad)" opacity="0.60"/>
+</svg>
