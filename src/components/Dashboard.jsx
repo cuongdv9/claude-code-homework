@@ -1,6 +1,7 @@
 export default function Dashboard({
   onPlay,
-  onMultiplayer,
+  onLocalMP,
+  onOnlineMP,
   theme,
   themes,
   onThemeChange,
@@ -30,8 +31,11 @@ export default function Dashboard({
         <button className="btn-primary" onClick={onPlay}>
           START GAME
         </button>
-        <button className="btn-secondary" onClick={onMultiplayer}>
+        <button className="btn-secondary" onClick={onLocalMP}>
           👥 2 PLAYERS
+        </button>
+        <button className="btn-secondary" onClick={onOnlineMP}>
+          🌐 ONLINE
         </button>
       </div>
     </div>

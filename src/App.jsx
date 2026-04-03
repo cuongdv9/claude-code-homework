@@ -1,21 +1,51 @@
-import { useState, useCallback, useRef } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 import { useGame } from "./hooks/useGame";
 import { useTheme } from "./hooks/useTheme";
+import { useMultiplayer } from "./hooks/useMultiplayer";
 import { saveScore } from "./utils/leaderboard";
 import Dashboard from "./components/Dashboard";
 import GameBoard from "./components/GameBoard";
 import EndScreen from "./components/EndScreen";
 import HandoffScreen from "./components/HandoffScreen";
 import MultiplayerResult from "./components/MultiplayerResult";
+import MultiplayerLobby from "./components/MultiplayerLobby";
 
 export default function App() {
   const [screen, setScreen] = useState("dashboard");
   const [endData, setEndData] = useState(null);
-  const [mpData, setMpData] = useState(null); // { p1: result } during MP
+  const [mpData, setMpData] = useState(null);
   const game = useGame();
+  const mp = useMultiplayer();
   const { theme, setTheme, themes } = useTheme();
   const startTimeRef = useRef(null);
-  const isMpRef = useRef(false); // true when in multiplayer mode
+  const modeRef = useRef("solo"); // "solo" | "local" | "online"
+
+  // When server sends questions, load them into the game and start playing
+  useEffect(() => {
+    if (mp.status === "playing" && mp.questions) {
+      game.loadQuestions(mp.questions);
+      startTimeRef.current = Date.now();
+      setScreen("game");
+    }
+  }, [mp.status, mp.questions]);
+
+  // Send live updates to opponent during online game
+  useEffect(() => {
+    if (modeRef.current !== "online" || screen !== "game") return;
+    mp.sendUpdate({
+      correctCount: game.correctCount,
+      amount: game.currentAmount,
+      questionIndex: game.questionIndex,
+    });
+  }, [game.correctCount, game.questionIndex]);
+
+  // When both online players finish, show final result
+  useEffect(() => {
+    if (mp.status === "finished" && mp.finalResult) {
+      setScreen("mp-result");
+      setMpData({ p1: mp.finalResult.p1, p2: mp.finalResult.p2 });
+    }
+  }, [mp.status, mp.finalResult]);
 
   const buildResult = useCallback(
     (reason, amount) => {
@@ -51,24 +81,27 @@ export default function App() {
   const handleEnd = useCallback(
     (reason, amount) => {
       const result = buildResult(reason, amount);
+      const mode = modeRef.current;
 
-      if (isMpRef.current) {
-        // Multiplayer flow
+      game.reset();
+
+      if (mode === "online") {
+        mp.sendGameOver(result);
+        // Show waiting screen until both players finish (mp.status → 'finishing')
+        setScreen("mp-waiting");
+      } else if (mode === "local") {
         if (!mpData) {
-          // P1 just finished → go to handoff
-          game.reset();
+          // P1 done → handoff
           setMpData({ p1: result });
           setScreen("handoff");
         } else {
-          // P2 just finished → show final comparison
-          const p1 = mpData.p1;
-          isMpRef.current = false;
-          game.reset();
-          setMpData({ p1, p2: result });
+          // P2 done → result
+          setMpData((d) => ({ ...d, p2: result }));
+          modeRef.current = "solo";
           setScreen("mp-result");
         }
       } else {
-        // Single-player flow
+        // Solo
         const { top10, rank } = saveScore({
           correctCount: result.correctCount,
           amount,
@@ -78,53 +111,94 @@ export default function App() {
         });
         setEndData({ ...result, leaderboard: top10, rank });
         setScreen("end");
-        game.reset();
       }
     },
-    [buildResult, game.reset, mpData],
+    [buildResult, game.reset, mpData, mp.sendGameOver],
   );
 
-  function startGame() {
-    isMpRef.current = false;
-    game.reset();
-    startTimeRef.current = Date.now();
-    setScreen("game");
-  }
-
-  function startMultiplayer() {
-    isMpRef.current = true;
+  // ── Starters ──────────────────────────────────────────
+  function startSolo() {
+    modeRef.current = "solo";
     setMpData(null);
     game.reset();
     startTimeRef.current = Date.now();
     setScreen("game");
   }
 
-  function startP2() {
+  function startLocalMP() {
+    modeRef.current = "local";
+    setMpData(null);
     game.reset();
     startTimeRef.current = Date.now();
     setScreen("game");
+  }
+
+  function startP2Local() {
+    game.reset();
+    startTimeRef.current = Date.now();
+    setScreen("game");
+  }
+
+  function openOnlineLobby() {
+    modeRef.current = "online";
+    mp.reset();
+    setScreen("mp-lobby");
   }
 
   function backToDashboard() {
-    isMpRef.current = false;
+    modeRef.current = "solo";
     setEndData(null);
     setMpData(null);
+    mp.reset();
     setScreen("dashboard");
   }
 
+  // ── Render ─────────────────────────────────────────────
   return (
     <div className="app">
       {screen === "dashboard" && (
         <Dashboard
-          onPlay={startGame}
-          onMultiplayer={startMultiplayer}
+          onPlay={startSolo}
+          onLocalMP={startLocalMP}
+          onOnlineMP={openOnlineLobby}
           theme={theme}
           themes={themes}
           onThemeChange={setTheme}
         />
       )}
 
-      {screen === "game" && <GameBoard game={game} onEnd={handleEnd} />}
+      {screen === "mp-lobby" && (
+        <MultiplayerLobby
+          status={mp.status}
+          roomCode={mp.roomCode}
+          error={mp.error}
+          onCreate={mp.createRoom}
+          onJoin={mp.joinRoom}
+          onBack={backToDashboard}
+        />
+      )}
+
+      {screen === "game" && (
+        <GameBoard
+          game={game}
+          onEnd={handleEnd}
+          opponent={modeRef.current === "online" ? mp.opponent : null}
+        />
+      )}
+
+      {screen === "mp-waiting" && (
+        <div className="lobby-screen">
+          <div className="lobby-content">
+            <div className="lobby-title">You finished!</div>
+            <div className="lobby-waiting">
+              <span className="lobby-dot" />
+              <span className="lobby-dot" />
+              <span className="lobby-dot" />
+              Waiting for opponent…
+            </div>
+          </div>
+        </div>
+      )}
 
       {screen === "end" && endData && (
         <EndScreen
@@ -141,7 +215,7 @@ export default function App() {
       )}
 
       {screen === "handoff" && mpData?.p1 && (
-        <HandoffScreen p1Result={mpData.p1} onReady={startP2} />
+        <HandoffScreen p1Result={mpData.p1} onReady={startP2Local} />
       )}
 
       {screen === "mp-result" && mpData?.p1 && mpData?.p2 && (

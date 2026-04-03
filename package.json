@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
+    "server": "node server.js",
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
@@ -11,7 +12,8 @@
   },
   "dependencies": {
     "react": "^18.3.0",
-    "react-dom": "^18.3.0"
+    "react-dom": "^18.3.0",
+    "ws": "^8.20.0"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.9.1",

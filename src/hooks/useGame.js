@@ -166,6 +166,9 @@ function reducer(state, action) {
     case "RESET":
       return makeInitialState();
 
+    case "LOAD_QUESTIONS":
+      return { ...makeInitialState(), questions: action.questions };
+
     default:
       return state;
   }
@@ -237,6 +240,11 @@ export function useGame() {
     dispatch({ type: "RESET" });
   }, []);
 
+  const loadQuestions = useCallback((questions) => {
+    localStorage.removeItem(STORAGE_KEY);
+    dispatch({ type: "LOAD_QUESTIONS", questions });
+  }, []);
+
   return {
     ...state,
     currentQuestion,
@@ -251,5 +259,6 @@ export function useGame() {
     usePhone,
     closeLifeline,
     reset,
+    loadQuestions,
   };
 }
