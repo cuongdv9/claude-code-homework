@@ -1,132 +1,133 @@
 # QuizMillionaire — Concept
 
-A minimalist, high-tension mobile web app played in short bursts: 15 randomly selected questions, 3 lifelines, and a 15-second timer per question.
+A minimalist, high-tension mobile web quiz app: 15 randomly selected questions, 3 lifelines, a 15-second timer, and real-time online multiplayer.
 
 ---
 
-## 1. Game Mechanics & Structure
+## 1. Game Modes
 
-- **Progressive Ladder:** 15 questions drawn randomly from a pool of 45. Questions are reshuffled every new game.
-- **Timer:** 15 seconds per question. Expiry reveals the correct answer briefly, then auto-skips to the next question (no game over).
-- **Wrong Answer:** Shows the correct answer for 1.5s, then continues to the next question — no game over, no penalty except losing that question's reward.
-- **Walk Away:** Player can exit at any time and keep the total reward earned from correct answers so far.
-- **Game Over:** Only when the player answers Q15 incorrectly or the timer expires on Q15.
+### Solo
 
-**Reward System:**
+- Play 15 questions from a pool of 45 (reshuffled each game).
+- End screen shows prize, stats, and leaderboard.
 
-- Reward is based solely on `correctCount` — wrong answers do not increase it.
-- Money ladder: $100 → $200 → $300 → $500 → $1,000 → $2,000 → $4,000 → $8,000 → $16,000 → $32,000 → $64,000 → $125,000 → $250,000 → $500,000 → $1,000,000.
+### Online Multiplayer
+
+- Two players connect via WebSocket through a 4-character room code.
+- The server picks **the same 15 questions** for both players — fair competition.
+- Both play simultaneously on their own devices.
+- A live opponent panel shows the opponent's current prize and question number.
+- When both finish, a comparison screen declares the winner (by correctCount, then accuracy as tiebreaker).
+
+---
+
+## 2. Game Mechanics
+
+- **Timer:** 15 seconds per question. Expiry reveals the correct answer briefly, then auto-skips (no game over).
+- **Wrong Answer:** Shows correct answer for 1.5s, continues to next question — no game over except on Q15.
+- **Walk Away:** Player exits at any time, keeps total reward from correct answers so far.
+- **Game Over:** Only when Q15 is answered wrong or timer expires on Q15.
+
+**Reward System:** Based solely on `correctCount` — wrong answers never increase it.
+Money ladder: $100 → $200 → $300 → $500 → $1,000 → $2,000 → $4,000 → $8,000 → $16,000 → $32,000 → $64,000 → $125,000 → $250,000 → $500,000 → $1,000,000.
 
 **Lifelines** (once per game):
 
-- **50/50** — Removes two wrong answers, always preserving the correct answer and the player's currently selected answer (if any).
-- **Ask the Audience** — Bar chart of audience vote percentages; correct answer receives 50–74%.
-- **Phone a Friend** — Randomized expert opinion with confidence %. 85% chance of being correct.
+- **50/50** — Removes 2 wrong answers; preserves correct answer and selected answer (if any).
+- **Ask the Audience** — Bar chart; correct answer gets 50–74%.
+- **Phone a Friend** — Expert opinion with confidence %; 85% chance correct.
 
-**Final Answer:** Two-step — tap to highlight (orange), tap again or press "FINAL ANSWER" to confirm.
-
----
-
-## 2. Mobile UI Design
-
-Built for one-handed play, prioritizing readability and quick feedback.
-
-| Area       | Contents                                                                                                |
-| ---------- | ------------------------------------------------------------------------------------------------------- |
-| **Header** | Progress bar (15 segments), current reward, lifeline icons (grayed when used), circular countdown timer |
-| **Center** | Question box                                                                                            |
-| **Bottom** | Answers A–D, large tappable buttons (min 44×44px)                                                       |
-
-**Progress Bar segments:**
-
-- Dim = not yet reached
-- Green = correctly answered
-- Red = wrong answer (game continued)
-- Gold = current question
-
-**Answer Feedback:**
-
-- **Selected:** Orange highlight
-- **Correct:** Green flash + ascending chime arpeggio + confetti burst from both bottom corners
-- **Incorrect:** Red flash + shake animation + descending buzzer, correct answer highlighted → auto-skips after 1.5s
-
-**Dashboard (Start Screen):**
-
-- Centered layout: logo with pulse animation, 4 theme swatches, "START GAME" button
-- No "Resume Game" — each session starts fresh
-
-**End Screen shows:**
-
-- Title (Win / Game Over / Walked Away)
-- Total prize amount earned
-- ✓ N correct · ✗ N wrong · N% accuracy · ⏱ time taken
-
-**Themes:** 4 selectable via colored swatches, persisted in localStorage:
-
-- Classic (blue) · Midnight (indigo) · Forest (green) · Crimson (red)
+**Final Answer:** Tap to highlight (orange) → tap again or press "FINAL ANSWER" to confirm.
 
 ---
 
-## 3. Technical Stack
+## 3. Mobile UI Design
+
+| Area       | Contents                                                                   |
+| ---------- | -------------------------------------------------------------------------- |
+| **Header** | Progress bar (15 segments), current reward, lifeline icons, circular timer |
+| **Center** | Question box                                                               |
+| **Bottom** | Answers A–D (min 44×44px)                                                  |
+
+**Progress bar:** Dim = not reached · Green = correct · Red = wrong · Gold = current
+
+**Answer feedback:**
+
+- Correct: green flash + chime arpeggio + confetti from bottom corners
+- Incorrect: red flash + shake + buzzer → auto-skips after 1.5s
+
+**Dashboard:** Logo (pulse animation) · 4 theme swatches · START GAME · 🌐 ONLINE
+
+**Online Multiplayer lobby:**
+
+- Create Room → 4-char code displayed, waiting animation
+- Join Room → enter code → both players start simultaneously
+- Error shown if server is not running
+
+**Opponent panel (during online game):** compact strip showing opponent's live amount, question number, and ✓ Done when they finish.
+
+**End Screen:** Prize amount · ✓/✗ counts · accuracy % · time taken · Top 10 leaderboard
+**Multiplayer Result:** Side-by-side cards · winner gets gold border + "WINNER 🏆" badge · confetti
+
+**Themes:** Classic (blue) · Midnight (indigo) · Forest (green) · Crimson (red) — persisted in localStorage.
+
+---
+
+## 4. Technical Stack
 
 - **Framework:** React.js with Vite
-- **Styling:** CSS custom properties + `data-theme` on `<html>` for theming; Flexbox/Grid
-- **State:** `useReducer` central game state machine, persisted to localStorage
-- **Audio:** Web Audio API — synthesized tones only, no audio files
-- **Background:** Static SVG (`public/bg.svg`) — Millionaire studio set scene (spotlights, audience, hot seat), applied via CSS `background-image`
+- **Styling:** CSS custom properties + `data-theme` on `<html>`; Flexbox/Grid
+- **State:** `useReducer` game state machine, persisted to localStorage
+- **Audio:** Web Audio API (no audio files)
+- **Background:** `public/bg.svg` — Millionaire studio set, applied via CSS `background-image`
+- **Multiplayer:** Node.js WebSocket server (`ws` package); Vite proxies `/ws` to `:8080`
 
-**Question data structure:**
+**Question schema:**
 
 ```json
-{
-  "id": 1,
-  "question": "What is the capital of France?",
-  "answers": ["London", "Berlin", "Paris", "Madrid"],
-  "correct": 2
-}
+{ "id": 1, "question": "...", "answers": ["A", "B", "C", "D"], "correct": 2 }
 ```
 
-- `correct` is a **0-based index** into `answers`. Validated on load (`typeof correct === "number"` and in bounds).
+`correct` = 0-based index into `answers`. Validated on load.
 
-**State shape (key fields):**
+**WebSocket events:**
+| Client → Server | Server → Client |
+|---|---|
+| `create-room` | `room-created { code }` |
+| `join-room { code }` | `game-start { questions }` |
+| `update { data }` | `opponent-update { data }` |
+| `game-over { result }` | `opponent-finished { result }` |
+| — | `final-result { p1, p2 }` |
+| — | `opponent-disconnected` |
 
-```js
-{
-  questions: Question[],        // 15 shuffled for this game
-  questionIndex: number,        // 0–14
-  correctCount: number,         // increments only on correct answers
-  history: ('correct'|'wrong')[],
-  phase: 'answering'|'feedback',
-  selectedAnswer: string|null,
-  isCorrect: boolean|null,
-  lifelines: { fifty, audience, phone },
-}
+---
+
+## 5. User Journey
+
+**Solo:**
+
+1. Dashboard → START GAME → gameplay → End Screen (stats + leaderboard)
+
+**Online:**
+
+1. Dashboard → 🌐 ONLINE → Lobby (create or join room)
+2. Both players start simultaneously when room fills
+3. Gameplay with live opponent panel
+4. First to finish → "Waiting for opponent…"
+5. Both done → Multiplayer Result (winner declared)
+
+---
+
+## 6. Running the App
+
+```bash
+npm run server   # WebSocket server on :8080 (separate terminal)
+npm run dev      # Vite dev server on :5173
 ```
 
 ---
 
-## 4. User Journey
+## 7. Monetization
 
-1. **Dashboard** — Centered logo, theme swatches, "START GAME" button.
-2. **Gameplay** — Question → Selection → Confirmation → Feedback (1.5s) → Next Question (or End).
-3. **End Screen:**
-   - Wrong on Q15 / timeout on Q15: total earned from correct answers + stats.
-   - Walk Away: total earned so far + stats.
-   - Win ($1M): confetti + trophy + stats.
-   - Stats: correct count, wrong count, accuracy %, time taken.
-
----
-
-## 5. Monetization
-
-- **Ad-Supported:** Interstitial ads between games; optional banner at dashboard bottom.
-- **Rewarded Ads:** Watch a video to earn one extra lifeline — distinct flow from normal lifelines.
-
----
-
-## 6. Development Priorities
-
-- **Mobile-First:** Buttons minimum 44×44px; single screen, no scrolling during gameplay.
-- **Fast Loading:** Minimal CSS, Web Audio API (no audio file downloads), SVG background.
-- **State Persistence:** localStorage auto-saves; stale saves without `questions` array are discarded on load.
-- **Question Bank:** 45 questions; 15 picked per game via array shuffle + slice.
+- Interstitial ads between games; optional banner at dashboard bottom.
+- Rewarded ad grants one extra lifeline — distinct flow from normal lifelines.
