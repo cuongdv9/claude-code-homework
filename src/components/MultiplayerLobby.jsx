@@ -9,7 +9,7 @@ export default function MultiplayerLobby({
   onBack,
 }) {
   const [code, setCode] = useState("");
-  const [view, setView] = useState("menu"); // menu | create | join
+  const [view, setView] = useState("menu"); // menu | join
 
   if (status === "waiting") {
     return (
@@ -51,13 +51,7 @@ export default function MultiplayerLobby({
 
         {view === "menu" && (
           <>
-            <button
-              className="btn-primary"
-              onClick={() => {
-                setView("create");
-                onCreate();
-              }}
-            >
+            <button className="btn-primary" onClick={onCreate}>
               🏠 Create Room
             </button>
             <button className="btn-secondary" onClick={() => setView("join")}>

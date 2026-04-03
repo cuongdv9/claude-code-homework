@@ -1,7 +1,8 @@
 import { useState, useRef, useCallback } from "react";
 
 // Vite proxies /ws → ws://localhost:8080 in dev
-const WS_URL = `ws://${window.location.hostname}:${window.location.port}/ws`;
+// window.location.host includes port (e.g. "localhost:5173")
+const WS_URL = `${window.location.protocol === "https:" ? "wss" : "ws"}://${window.location.host}/ws`;
 
 export function useMultiplayer() {
   const [status, setStatus] = useState("idle"); // idle | connecting | waiting | playing | finishing | finished
@@ -66,6 +67,11 @@ export function useMultiplayer() {
         setError(msg.message);
         setStatus("idle");
       }
+    };
+
+    ws.onerror = () => {
+      setError("Cannot connect to server. Run: npm run server");
+      setStatus("idle");
     };
 
     ws.onclose = () => {
