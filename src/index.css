@@ -750,6 +750,57 @@ body,
   color: var(--text-dim);
 }
 
+/* Leaderboard */
+.leaderboard {
+  width: 100%;
+  margin-top: 8px;
+}
+.leaderboard-title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.leaderboard-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-height: 220px;
+  overflow-y: auto;
+}
+.lb-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 8px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.04);
+  font-size: 0.82rem;
+}
+.lb-row--current {
+  background: rgba(251, 191, 36, 0.12);
+  outline: 1px solid rgba(251, 191, 36, 0.35);
+}
+.lb-rank {
+  width: 28px;
+  font-size: 0.9rem;
+}
+.lb-icon {
+  font-size: 0.9rem;
+}
+.lb-amount {
+  flex: 1;
+  font-weight: 700;
+  color: var(--gold);
+}
+.lb-meta {
+  font-size: 0.75rem;
+  color: var(--text-dim);
+}
+
 .end-btn {
   margin-top: 16px;
 }

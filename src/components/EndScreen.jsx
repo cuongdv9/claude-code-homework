@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import Confetti from "./Confetti";
+import Leaderboard from "./Leaderboard";
 
 export default function EndScreen({
   reason,
@@ -8,6 +9,8 @@ export default function EndScreen({
   wrong,
   accuracy,
   timeTaken,
+  leaderboard,
+  rank,
   onPlayAgain,
 }) {
   const isWin = reason === "win";
@@ -47,6 +50,8 @@ export default function EndScreen({
           <div className="end-stat accuracy">{accuracy}% accuracy</div>
           <div className="end-stat time">⏱ {timeTaken}</div>
         </div>
+
+        <Leaderboard entries={leaderboard} currentRank={rank} />
 
         <button className="btn-primary end-btn" onClick={onPlayAgain}>
           PLAY AGAIN

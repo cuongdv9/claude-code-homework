@@ -1,6 +1,7 @@
 import { useState, useCallback, useRef } from "react";
 import { useGame } from "./hooks/useGame";
 import { useTheme } from "./hooks/useTheme";
+import { saveScore } from "./utils/leaderboard";
 import Dashboard from "./components/Dashboard";
 import GameBoard from "./components/GameBoard";
 import EndScreen from "./components/EndScreen";
@@ -33,7 +34,24 @@ export default function App() {
       const total = correct + wrong;
       const accuracy = total > 0 ? Math.round((correct / total) * 100) : 0;
 
-      setEndData({ reason, amount, correct, wrong, accuracy, timeTaken });
+      const { top10, rank } = saveScore({
+        correctCount: game.correctCount,
+        amount,
+        accuracy,
+        timeTaken,
+        reason,
+      });
+
+      setEndData({
+        reason,
+        amount,
+        correct,
+        wrong,
+        accuracy,
+        timeTaken,
+        leaderboard: top10,
+        rank,
+      });
       setScreen("end");
       game.reset();
     },
@@ -72,6 +90,8 @@ export default function App() {
           wrong={endData.wrong}
           accuracy={endData.accuracy}
           timeTaken={endData.timeTaken}
+          leaderboard={endData.leaderboard}
+          rank={endData.rank}
           onPlayAgain={handlePlayAgain}
         />
       )}
