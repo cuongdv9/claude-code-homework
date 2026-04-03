@@ -1,4 +1,10 @@
-export default function Dashboard({ onPlay, theme, themes, onThemeChange }) {
+export default function Dashboard({
+  onPlay,
+  onMultiplayer,
+  theme,
+  themes,
+  onThemeChange,
+}) {
   return (
     <div className="dashboard">
       <div className="splash-logo">
@@ -23,6 +29,9 @@ export default function Dashboard({ onPlay, theme, themes, onThemeChange }) {
       <div className="dashboard-actions">
         <button className="btn-primary" onClick={onPlay}>
           START GAME
+        </button>
+        <button className="btn-secondary" onClick={onMultiplayer}>
+          👥 2 PLAYERS
         </button>
       </div>
     </div>
